@@ -8,3 +8,10 @@ dependency 'essentialmode'
 
 -- Core General
 client_script 'client_core.lua'
+server_script 'server_core.lua'
+
+-- Server configs
+server_script 'config/config_master.lua'
+
+-- Function
+server_script 'function/server_function.lua'
