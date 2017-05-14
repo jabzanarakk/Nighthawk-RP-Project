@@ -12,3 +12,7 @@ server_script 'config/config_master.lua'
 
 -- Function
 server_script 'function/server_function.lua'
+
+-- Database
+server_script 'db/db_init.lua'
+server_script 'db/db_function.lua'
