@@ -1,7 +1,7 @@
 AddEventHandler('playerConnecting', function(name, setReason)
     -- Check RP name
     local function badNameKick ()
-        setReason('ชื่อของคุณไม่สอดคล้องกับนโยบายความเป็น Role Play ของเซิฟเวอร์เรา ตัวอย่างชื่อ  "Jack Winter", "Somchai Sabyedee" สามารถเข้าไปอ่านข้อมูลเพิ่มเติมได้ที่ http://lsrp.eaglege.com/rules')
+        setReason('ชื่อของคุณไม่สอดคล้องกับนโยบายความเป็น Role Play ของเซิฟเวอร์เรา ตัวอย่างชื่อ  "Jack Winter", "Somchai Sabyedee" สามารถเข้าไปอ่านข้อมูลเพิ่มเติมได้ที่ http://sarp.eaglege.com/rules')
         CancelEvent()
         print ('Bad Role Play name ' .. name)
     end
@@ -32,3 +32,4 @@ AddEventHandler('playerConnecting', function(name, setReason)
         badNameKick ()
     end
 end)
+

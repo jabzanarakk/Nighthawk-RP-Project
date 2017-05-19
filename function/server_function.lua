@@ -1,5 +1,5 @@
-local upChar = LSRP_SETTINGS.upChar
-local lowChar = LSRP_SETTINGS.lowChar
+local upChar = SARP_SETTINGS.upChar
+local lowChar = SARP_SETTINGS.lowChar
 
 function inArray (array, val)
     for index, value in ipairs(array) do
