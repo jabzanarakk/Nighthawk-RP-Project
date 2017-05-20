@@ -1,8 +1,3 @@
-game = {
-	["currentArea"] = SARP_SETTINGS.defaultArea,
-	["secondaryArea"] = nil
-}
-
 AddEventHandler('playerConnecting', function(name, setReason)
     -- Check RP name
     local function badNameKick ()
@@ -47,12 +42,7 @@ AddEventHandler('sarp:spawn', function()
 	end)
 
 	local pos = nil
-	if(game.secondaryArea)then
-		local spawns = MergeTable(game.currentArea.spawns, game.secondaryArea.spawns)
-		pos = spawns[ math.random( #spawns ) ]
-	else
-		pos = game.currentArea.spawns[ math.random( #game.currentArea.spawns ) ]
-	end
+    pos = SARP_SETTINGS.defaultArea[ math.random( #SARP_SETTINGS.defaultArea ) ]
     
     if Users[source].new then
         pos = SARP_SETTINGS.spawnAreas.paletobay[ math.random( #SARP_SETTINGS.spawnAreas.paletobay ) ]
