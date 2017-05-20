@@ -1,3 +1,8 @@
+game = {
+	["currentArea"] = SARP_SETTINGS.defaultArea,
+	["secondaryArea"] = nil
+}
+
 AddEventHandler('playerConnecting', function(name, setReason)
     -- Check RP name
     local function badNameKick ()
@@ -33,3 +38,26 @@ AddEventHandler('playerConnecting', function(name, setReason)
     end
 end)
 
+RegisterServerEvent('sarp:spawn')
+AddEventHandler('sarp:spawn', function()
+	TriggerEvent('es:getPlayerFromId', source, function(user)
+		if(user)then
+			TriggerClientEvent('es:activateMoney', source, user.money)
+		end
+	end)
+
+	local pos = nil
+	if(game.secondaryArea)then
+		local spawns = MergeTable(game.currentArea.spawns, game.secondaryArea.spawns)
+		pos = spawns[ math.random( #spawns ) ]
+	else
+		pos = game.currentArea.spawns[ math.random( #game.currentArea.spawns ) ]
+	end
+    
+    if Users[source].new then
+        pos = SARP_SETTINGS.spawnAreas.paletobay[ math.random( #SARP_SETTINGS.spawnAreas.paletobay ) ]
+    end
+
+	local model = "mp_m_freemode_01"
+	TriggerClientEvent('sarp:spawnPlayer', source, pos.x, pos.y, pos.z, model)
+end)
