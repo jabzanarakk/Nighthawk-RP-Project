@@ -42,11 +42,7 @@ AddEventHandler('sarp:spawn', function()
 	end)
 
 	local pos = nil
-    pos = SARP_SETTINGS.defaultArea[ math.random( #SARP_SETTINGS.defaultArea ) ]
-    
-    if Users[source].new then
-        pos = SARP_SETTINGS.spawnAreas.paletobay[ math.random( #SARP_SETTINGS.spawnAreas.paletobay ) ]
-    end
+    pos = SARP_SETTINGS.defaultArea.spawns[ math.random( #SARP_SETTINGS.defaultArea.spawns ) ]
 
 	local model = "mp_m_freemode_01"
 	TriggerClientEvent('sarp:spawnPlayer', source, pos.x, pos.y, pos.z, model)
