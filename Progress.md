@@ -32,6 +32,7 @@ Plan System
 - Jail
 - Stats (Water, Food, Health)
 - Advanced Car
+- Disable vehicles and peds
 
 Waiting for script Support
 - Database API
