@@ -1,7 +1,7 @@
 AddEventHandler('playerConnecting', function(name, setReason)
     -- Check RP name
     local function badNameKick ()
-        setReason('ชื่อของคุณไม่สอดคล้องกับนโยบายความเป็น Role Play ของเซิฟเวอร์เรา ตัวอย่างชื่อ  "Jack Winter", "Somchai Sabyedee" สามารถเข้าไปอ่านข้อมูลเพิ่มเติมได้ที่ http://lsrp.eaglege.com/rules')
+        setReason('ชื่อของคุณไม่สอดคล้องกับนโยบายความเป็น Role Play ของเซิฟเวอร์เรา ตัวอย่างชื่อ  "Jack Winter", "Somchai Sabyedee" สามารถเข้าไปอ่านข้อมูลเพิ่มเติมได้ที่ http://sarp.eaglege.com/rules')
         CancelEvent()
         print ('Bad Role Play name ' .. name)
     end
@@ -31,4 +31,19 @@ AddEventHandler('playerConnecting', function(name, setReason)
     else
         badNameKick ()
     end
+end)
+
+RegisterServerEvent('sarp:spawn')
+AddEventHandler('sarp:spawn', function()
+	TriggerEvent('es:getPlayerFromId', source, function(user)
+		if(user)then
+			TriggerClientEvent('es:activateMoney', source, user.money)
+		end
+	end)
+
+	local pos = nil
+    pos = SARP_SETTINGS.defaultArea.spawns[ math.random( #SARP_SETTINGS.defaultArea.spawns ) ]
+
+	local model = "mp_m_freemode_01"
+	TriggerClientEvent('sarp:spawnPlayer', source, pos.x, pos.y, pos.z, model)
 end)
