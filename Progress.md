@@ -8,7 +8,7 @@ Prototype System
 - Simple Database API
 
 In Development System
-- Advanced Spawn
+- Advanced Spawn Manager
 
 Plan System
 - Cop
