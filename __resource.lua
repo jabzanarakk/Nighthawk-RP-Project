@@ -30,5 +30,5 @@ server_script 'config/config_master.lua'
 server_script 'function/server_function.lua'
 
 -- Core
-client_script 'core/banking/init_client.lua'
-server_script 'core/banking/init_server.lua'
+client_script 'core/banking/banking_client.lua'
+server_script 'core/banking/banking_server.lua'
