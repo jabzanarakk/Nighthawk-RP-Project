@@ -1,4 +1,27 @@
 AddEventHandler('playerConnecting', function(name, setReason)
+    -- Check Ban
+    local identifiers = GetPlayerIdentifiers(source)
+
+	for i = 1, #identifiers do
+		local identifier = identifiers[i]
+		debugMsg('Checking user ban: ' .. identifier .. " (" .. name .. ")")
+
+		local status, err = pcall(isIdentifierBanned(identifier))
+		if(err) then
+			MySQL:open("127.0.0.1", "sarp_01", "Eagleone", "129657")
+		end
+		local banned = isIdentifierBanned(identifier)
+		if(banned)then
+			if(type(settings.defaultSettings.banreason) == "string")then
+				setCallback(settings.defaultSettings.banreason)
+			elseif(type(settings.defaultSettings.banreason) == "function")then
+				setCallback(settings.defaultSettings.banreason(identifier, name))
+			else
+				setCallback("Default ban reason error")
+			end
+			CancelEvent()
+		end
+	end
     -- Check RP name
     local function badNameKick ()
         setReason('ชื่อของคุณไม่สอดคล้องกับนโยบายความเป็น Role Play ของเซิฟเวอร์เรา ตัวอย่างชื่อ  "Jack Winter", "Somchai Sabyedee" สามารถเข้าไปอ่านข้อมูลเพิ่มเติมได้ที่ http://sarp.eaglege.com/rules')
