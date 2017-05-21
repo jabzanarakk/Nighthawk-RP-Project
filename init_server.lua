@@ -61,29 +61,6 @@ AddEventHandler('playerConnecting', function(name, setReason)
     end
 end)
 
-RegisterServerEvent('es:sessionStart')
-AddEventHandler('es:sessionStart', function()
-	local identifiers = GetPlayerIdentifiers(source)
-	for i = 1, #identifiers do
-		if(Users[source] == nil)then
-			debugMsg("DB API | Loading user: " .. GetPlayerName(source))
-
-			local identifier = identifiers[i]
-            if not hasAccount(identifier) then
-                registerUser(identifier, source)
-            else
-                LoadUser(identifier, source)
-            end
-
-			justJoined[source] = true
-
-			if(settings.defaultSettings.pvpEnabled)then
-				TriggerClientEvent("es:enablePvp", source)
-			end
-		end
-	end
-end)
-
 RegisterServerEvent('sarp:spawn')
 AddEventHandler('sarp:spawn', function()
 	TriggerEvent('es:getPlayerFromId', source, function(user)
@@ -93,7 +70,14 @@ AddEventHandler('sarp:spawn', function()
 	end)
 
 	local pos = nil
-    pos = SARP_SETTINGS.defaultArea.spawns[ math.random( #SARP_SETTINGS.defaultArea.spawns ) ]
+    pos = user.coords
+    if table.getn(pos) ~= 3 then
+        pos = SARP_SETTINGS.defaultArea.spawns[ math.random( #SARP_SETTINGS.defaultArea.spawns ) ]
+    end
+    
+    if newbie[source] then
+        pos = SARP_SETTINGS.spawnAreas.docks.spawns[ math.random( #SARP_SETTINGS.spawnAreas.docks.spawns ) ]
+    end
 
 	local model = "mp_m_freemode_01"
 	TriggerClientEvent('sarp:spawnPlayer', source, pos.x, pos.y, pos.z, model)

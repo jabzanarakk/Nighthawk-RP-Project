@@ -1,143 +1,164 @@
-local port = 5984 -- Change to whatever port you have CouchDB running on
-local ip = "127.0.0.1" -- Change to wherever your DB is hosted.
-local auth = "RWFnbGVvbmU6MTI5NjU3" -- base64 encoded string like this: "user:password", so, "root:1202" is what is here, (without quotes)
-local dbName = LSRP_SETTINGS.dbName -- define local database name for server
+-- Loading MySQL Class
+require "resources/sarp/lib/MySQL"
 
-db = {}
-exposedDB = {}
+local dbName = LSRP_SETTINGS.dbName
+local dbIP = LSRP_SETTINGS.dbIP
+local dbUser = LSRP_SETTINGS.dbUser
+local dbPass = LSRP_SETTINGS.dbPass
 
-function db.firstRunCheck()
-	PerformHttpRequest("http://" .. ip .. ":" .. port .. "/" .. dbName, function(err, rText, headers)
-		if err == 0 then
-			print("First run detected, setting up.")
-		else
-			print("^ Ignore that, Setup already ran, continueing.")
-		end
-	end, "PUT", "", {Authorization = "Basic " .. auth})
+-- MySQL:open("IP", "databasname", "user", "password")
+MySQL:open(dbName, dbIP, dbUser, dbPass)
+
+function LoadUser(identifier, source, new)
+	local executed_query = MySQL:executeQuery("SELECT * FROM users WHERE identifier = '@name'", {['@name'] = identifier})
+	local result = MySQL:getResults(executed_query, {'permission_level', 'money', 'identifier', 'group', 'pos'}, "identifier")
+
+	local group = groups[result[1].group]
+	Users[source] = Player(source, result[1].permission_level, result[1].money, result[1].identifier, result[1].pos, group)
+
+	TriggerClientEvent('es:setPlayerDecorator', source, 'rank', Users[source]:getPermissions())
+    
+    if new then
+        newbie[source] = true
+    end
 end
 
-function db.performCheckRunning()
-	PerformHttpRequest("http://" .. ip .. ":" .. port .. "", function(err, rText, headers)
-	end, "GET", "", {Authorization = "Basic " .. auth})
-end
+function isIdentifierBanned(id)
+	local executed_query = MySQL:executeQuery("SELECT * FROM bans WHERE banned = '@name'", {['@name'] = id})
+	local result = MySQL:getResults(executed_query, {'expires', 'reason', 'timestamp'}, "identifier")
 
--- First run check
-db.firstRunCheck()
-
-function exposedDB.createDatabase(db, cb)
-	PerformHttpRequest("http://" .. ip .. ":" .. port .. "/" .. db, function(err, rText, headers)
-		if err == 0 then
-			cb(true, 0)
-		else
-			cb(false, rText)
-		end
-	end, "PUT", "", {Authorization = "Basic " .. auth})
-end
-
--- query function
-
-function exposedDB.createDocument(db, rows, cb)
-	PerformHttpRequest("http://" .. ip .. ":" .. port .. "/_uuids", function(err, rText, headers)
-		PerformHttpRequest("http://" .. ip .. ":" .. port .. "/" .. db .. "/" .. json.decode(rText).uuids[1], function(err, rText, headers)
-			if err == 0 then
-				cb(true, 0)
-			else
-				cb(false, rText)
+	if(result)then
+		for k,v in ipairs(result)do
+			if v.expires > v.timestamp then
+				return true
 			end
-		end, "PUT", json.encode(rows), {["Content-Type"] = 'application/json', Authorization = "Basic " .. auth})
-	end, "GET", "", {Authorization = "Basic " .. auth})
+		end
+	end
+
+	return false
 end
 
-function exposedDB.getDocumentByRow(db, row, value, callback)
-	local qu = {selector = {[row] = value}}
-	PerformHttpRequest("http://" .. ip .. ":" .. port .. "/" .. db .. "/_find", function(err, rText, headers)
-		local t = json.decode(rText)
+AddEventHandler('es:getPlayers', function(cb)
+	cb(Users)
+end)
 
-		if(err == 0)then
-			if(t.docs[1])then
-				callback(t.docs[1])
-			else
-				callback(false)
+function hasAccount(identifier)
+	local executed_query = MySQL:executeQuery("SELECT * FROM users WHERE identifier = '@name'", {['@name'] = identifier})
+	local result = MySQL:getResults(executed_query, {'permission_level', 'money'}, "identifier")
+
+	if(result[1] ~= nil) then
+		return true
+	end
+	return false
+end
+
+
+function isLoggedIn(source)
+	if(Users[GetPlayerName(source)] ~= nil)then
+	if(Users[GetPlayerName(source)]['isLoggedIn'] == 1) then
+		return true
+	else
+		return false
+	end
+	else
+		return false
+	end
+end
+
+function registerUser(identifier, source)
+	-- Inserting Default User Account Stats
+	MySQL:executeQuery("INSERT INTO users (`identifier`, `permission_level`, `money`, `group`) VALUES ('@username', '0', '@money', 'user')",
+	{['@username'] = identifier, ['@money'] = LSRP_SETTINGS.startMoney})
+	LoadUser(identifier, source, true)
+end
+
+function renameCheck(identifier, name)
+    local executed_query = MySQL:executeQuery("SELECT * FROM users WHERE identifier = '@id'", {['@id'] = identifier})
+    local result = MySQL:getResults(executed_query, {'permission_level', 'name'}, "identifier")
+    
+    if(result[2] == name)then
+        return false
+    end
+    return true
+end
+
+AddEventHandler("es:setPlayerData", function(user, k, v, cb)
+	if(Users[user])then
+		if(Users[user][k])then
+
+			if(k ~= "money") then
+				Users[user][k] = v
+
+				MySQL:executeQuery("UPDATE users SET `@key`='@value' WHERE identifier = '@identifier'",
+			    {['@key'] = k, ['@value'] = v, ['@identifier'] = Users[user]['identifier']})
 			end
+
+			if(k == "group")then
+				Users[user].group = groups[v]
+			end
+
+			cb("Player data edited.", true)
 		else
-			callback(false, rText)
+			cb("Column does not exist!", false)
 		end
-	end, "POST", json.encode(qu), {["Content-Type"] = 'application/json', Authorization = "Basic " .. auth})		
-end
+	else
+		cb("User could not be found!", false)
+	end
+end)
 
-function exposedDB.updateDocument(db, documentID, updates, callback)
-	PerformHttpRequest("http://" .. ip .. ":" .. port .. "/" .. db .. "/" .. documentID, function(err, rText, headers)
-		local doc = json.decode(rText)
+AddEventHandler("es:setPlayerDataId", function(user, k, v, cb)
+	MySQL:executeQuery("UPDATE users SET @key='@value' WHERE identifier = '@identifier'",
+	{['@key'] = k, ['@value'] = v, ['@identifier'] = user})
 
-		if(doc)then
-			for i in pairs(updates)do
-				doc[i] = updates[i]
+	cb("Player data edited.", true)
+end)
+
+AddEventHandler("es:getPlayerFromId", function(user, cb)
+	if(Users)then
+		if(Users[user])then
+			cb(Users[user])
+		else
+			cb(nil)
+		end
+	else
+		cb(nil)
+	end
+end)
+
+AddEventHandler("es:getPlayerFromIdentifier", function(identifier, cb)
+	local executed_query = MySQL:executeQuery("SELECT * FROM users WHERE identifier = '@name'", {['@name'] = identifier})
+	local result = MySQL:getResults(executed_query, {'permission_level', 'money', 'identifier', 'group'}, "identifier")
+
+	if(result[1])then
+		cb(result[1])
+	else
+		cb(nil)
+	end
+end)
+
+AddEventHandler("es:getAllPlayers", function(cb)
+	local executed_query = MySQL:executeQuery("SELECT * FROM users", {})
+	local result = MySQL:getResults(executed_query, {'permission_level', 'money', 'identifier', 'group'}, "identifier")
+
+	if(result)then
+		cb(result)
+	else
+		cb(nil)
+	end
+end)
+
+-- Function to update player money every 60 seconds.
+local function savePlayerMoney()
+	SetTimeout(60000, function()
+		TriggerEvent("es:getPlayers", function(users)
+			for k,v in pairs(users)do
+				MySQL:executeQuery("UPDATE users SET `money`='@value' WHERE identifier = '@identifier'",
+			    {['@value'] = v.money, ['@identifier'] = v.identifier})
 			end
+		end)
 
-			PerformHttpRequest("http://" .. ip .. ":" .. port .. "/" .. db .. "/" .. doc._id, function(err, rText, headers)
-				callback((err or true))
-			end, "PUT", json.encode(doc), {["Content-Type"] = 'application/json', Authorization = "Basic " .. auth})
-		end
-	end, "GET", "", {["Content-Type"] = 'application/json', Authorization = "Basic " .. auth})	
-end
-
--- Why the fuck is this required?
-local theTestObject, jsonPos, jsonErr = json.decode('{"test":"tested"}')
-
--- normal function
-
-function dbRegisterUser(identifier, source)
-    print ('dbRegisterUser - start')
-    local startMoney = LSRP_SETTINGS.startMoney
-    exposedDB.createDocument(dbName, {identifier = identifier, playerName = GetPlayerName(source), money = startMoney, group = "user", permission = 0}, function(cb)
-        if cb then
-            print ('insert pass')
-        else
-            print ('insert bad' .. cb)
-        end
-    end)
-end
-
-function dbLoadUser(identifier, source)
-    print ('dbLoadUser - start')
-    exposedDB.getDocumentByRow(dbName, "identifier", identifier, function(data)
-        local group = groups[data.group]
-
-        playerData[source] = Player(source, data.playerName, data.permission, data.money, data.identifier, group)
-    end)
-end
-
-function dbGetUser(identifier, source)
-    print ('dbLoadUser')
-	exposedDB.getDocumentByRow(dbName, "identifier", identifier, function(data)
-		print ('exposedDB.getDocumentByRow')
-        local data = data
-        if not data then
-            print ('exposedDB.getDocumentByRow - true')
-            dbRegisterUser(identifier, source)
-        else
-            print ('exposedDB.getDocumentByRow - else')
-            dbLoadUser(identifier, source)
-        end
+		savePlayerMoney()
 	end)
 end
 
-function renameCheck (identifier, name)
-    exposedDB.getDocumentByRow(dbName, "identifier", identifier, function(data)
-        local data = data
-        if not data then
-            print ('New Player Join ' .. name)
-            return true
-        else
-            print ('Anti Rename Check - else')
-            local dataName = data.playerName
-            print ('Old ' .. dataName)
-            if dataName == name then
-                print ('Anti Rename Check - true')
-                return true
-            end
-            print ('Anti Rename Check - false')
-            return false
-        end
-    end)
-end
+savePlayerMoney()

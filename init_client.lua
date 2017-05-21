@@ -3,7 +3,7 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)
 
 		if NetworkIsSessionStarted() then
-			TriggerServerEvent('lsrp:dbLoad')
+			TriggerServerEvent('sarp:sessionStart')
 			return
 		end
 	end
@@ -14,9 +14,17 @@ AddEventHandler('onClientMapStart', function()
     exports.spawnmanager:forceRespawn()
     
     exports.spawnmanager:setAutoSpawnCallback(function()
-        if(true)then
-            TriggerServerEvent('sarp:spawn')
-        end
+        Citizen.CreateThread(function()
+            while true do
+                Citizen.Wait(3)
+                TriggerServerEvent('es:getPlayerFromId', source, function(user)
+                    if user ~= nil then
+                        TriggerServerEvent('sarp:spawn')
+                        return
+                    end
+                end)
+            end
+        end)
     end)
 end)
 

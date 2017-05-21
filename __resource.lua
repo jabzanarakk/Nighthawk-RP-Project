@@ -29,8 +29,10 @@ server_script 'config/config_master.lua'
 server_script 'function/server_function.lua'
 
 -- Database
-server_script 'db/db_init.lua'
 server_script 'db/db_function.lua'
+server_script 'db/db_groups.lua'
+server_script 'db/db_init.lua'
+server_script 'db/db_player.lua'
 
 -- Core
 client_script 'core/banking/banking_client.lua'
