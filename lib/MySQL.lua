@@ -13,7 +13,7 @@ MySQL.__index = MySQL
 function MySQL.open(self, server, database, userid, password)
 
 	local reflection = clr.System.Reflection
-	local assembly = reflection.Assembly.LoadFrom('resources/essentialmode/lib/MySql.Data.dll')
+	local assembly = reflection.Assembly.LoadFrom('resources/sarp/lib/MySql.Data.dll')
 	self.mysql = clr.MySql.Data.MySqlClient
 	self.connection = self.mysql.MySqlConnection("server="..server..";database="..database..";userid="..userid..";password="..password.."")
 	self.connection.Open()

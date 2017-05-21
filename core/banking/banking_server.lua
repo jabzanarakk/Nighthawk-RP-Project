@@ -1,4 +1,4 @@
-require "resources/essentialmode/lib/MySQL"
+require "resources/sarp/lib/MySQL"
 MySQL:open("127.0.0.1", "sarp_01", "Eagleone", "129657")
 
 -- HELPER FUNCTIONS
