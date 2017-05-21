@@ -83,7 +83,7 @@ function returnIndexesInTable(t)
 end
 
 function debugMsg (msg)
-    if(settings.defaultSettings.debugInformation and msg)then
+    if(SARP_SETTINGS.debugInformation and msg)then
         print("SARP DEBUG: " .. msg)
     end
 end
