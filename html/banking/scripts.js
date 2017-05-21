@@ -1,4 +1,3 @@
-// Credit to Kanersps @ EssentialMode and Eraknelo @FiveM
 function addGaps(nStr) {
   nStr += '';
   var x = nStr.split('.');
