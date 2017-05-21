@@ -16,7 +16,7 @@ function LoadUser(identifier, source, new)
 	local group = groups[result[1].group]
 	Users[source] = Player(source, result[1].permission_level, result[1].money, result[1].identifier, result[1].pos, group)
 
-	TriggerClientEvent('es:setPlayerDecorator', source, 'rank', Users[source]:getPermissions())
+	TriggerClientEvent('sarp:setPlayerDecorator', source, 'rank', Users[source]:getPermissions())
     
     if new then
         newbie[source] = true
@@ -38,7 +38,7 @@ function isIdentifierBanned(id)
 	return false
 end
 
-AddEventHandler('es:getPlayers', function(cb)
+AddEventHandler('sarp:getPlayers', function(cb)
 	cb(Users)
 end)
 

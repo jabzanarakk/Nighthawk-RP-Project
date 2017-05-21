@@ -26,8 +26,8 @@ function round(num, numDecimalPlaces)
 end
 
 -- Check Bank Balance
-TriggerEvent('es:addCommand', 'checkbalance', function(source, args, user)
-    TriggerEvent('es:getPlayerFromId', source, function(user)
+TriggerEvent('sarp:addCommand', 'checkbalance', function(source, args, user)
+    TriggerEvent('sarp:getPlayerFromId', source, function(user)
         local player = user.identifier
         local bankbalance = bankBalance(player)
         TriggerClientEvent("sarp:notify", source, "CHAR_BANK_MAZE", 1, "Maze Bank", false, "Your current account balance: ~g~$".. bankbalance)
@@ -37,7 +37,7 @@ TriggerEvent('es:addCommand', 'checkbalance', function(source, args, user)
 end)
 
 -- Bank Deposit
-TriggerEvent('es:addCommand', 'deposit', function(source, args, user)
+TriggerEvent('sarp:addCommand', 'deposit', function(source, args, user)
     local amount = ""
     local player = user.identifier
     for i=1,#args do
@@ -48,7 +48,7 @@ end)
 
 RegisterServerEvent('bank:deposit')
 AddEventHandler('bank:deposit', function(amount)
-    TriggerEvent('es:getPlayerFromId', source, function(user)
+    TriggerEvent('sarp:getPlayerFromId', source, function(user)
         local rounded = round(tonumber(amount), 0)
         if(string.len(rounded) >= 9) then
             TriggerClientEvent('chatMessage', source, "", {0, 0, 200}, "^1Input too high^0")
@@ -72,7 +72,7 @@ AddEventHandler('bank:deposit', function(amount)
 end)
 
 -- Bank Withdraw
-TriggerEvent('es:addCommand', 'withdraw', function(source, args, user)
+TriggerEvent('sarp:addCommand', 'withdraw', function(source, args, user)
     local amount = ""
     local player = user.identifier
     for i=1,#args do
@@ -83,7 +83,7 @@ end)
 
 RegisterServerEvent('bank:withdraw')
 AddEventHandler('bank:withdraw', function(amount)
-    TriggerEvent('es:getPlayerFromId', source, function(user)
+    TriggerEvent('sarp:getPlayerFromId', source, function(user)
         local rounded = round(tonumber(amount), 0)
         if(string.len(rounded) >= 9) then
             TriggerClientEvent('chatMessage', source, "", {0, 0, 200}, "^1Input too high^0")
@@ -108,7 +108,7 @@ AddEventHandler('bank:withdraw', function(amount)
 end)
 
 -- Bank Transfer
-TriggerEvent('es:addCommand', 'transfer', function(source, args, user)
+TriggerEvent('sarp:addCommand', 'transfer', function(source, args, user)
     local fromPlayer
     local toPlayer
     local amount
@@ -129,7 +129,7 @@ AddEventHandler('bank:transfer', function(fromPlayer, toPlayer, amount)
         TriggerClientEvent('chatMessage', source, "", {0, 0, 200}, "^1Cannot transfer to self^0")
         CancelEvent()
     else
-        TriggerEvent('es:getPlayerFromId', fromPlayer, function(user)
+        TriggerEvent('sarp:getPlayerFromId', fromPlayer, function(user)
             local rounded = round(tonumber(amount), 0)
             if(string.len(rounded) >= 9) then
                 TriggerClientEvent('chatMessage', source, "", {0, 0, 200}, "^1Input too high^0")
@@ -143,7 +143,7 @@ AddEventHandler('bank:transfer', function(fromPlayer, toPlayer, amount)
                     TriggerClientEvent("sarp:notify", source, "CHAR_BANK_MAZE", 1, "Maze Bank", false, "Transferred: ~r~-$".. rounded .." ~n~~s~New Balance: ~g~$" .. new_balance)
                     TriggerClientEvent("banking:updateBalance", source, new_balance)
                     TriggerClientEvent("banking:removeBalance", source, rounded)
-                    TriggerEvent('es:getPlayerFromId', toPlayer, function(user2)
+                    TriggerEvent('sarp:getPlayerFromId', toPlayer, function(user2)
                         local recipient = user2.identifier
                         deposit(recipient, rounded)
                         new_balance2 = bankBalance(recipient)
@@ -163,7 +163,7 @@ AddEventHandler('bank:transfer', function(fromPlayer, toPlayer, amount)
 end)
 
 -- Give Cash
-TriggerEvent('es:addCommand', 'givecash', function(source, args, user)
+TriggerEvent('sarp:addCommand', 'givecash', function(source, args, user)
     local fromPlayer
     local toPlayer
     local amount
@@ -180,11 +180,11 @@ end)
 
 RegisterServerEvent('bank:givecash')
 AddEventHandler('bank:givecash', function(toPlayer, amount)
-	TriggerEvent('es:getPlayerFromId', source, function(user)
+	TriggerEvent('sarp:getPlayerFromId', source, function(user)
 		if (tonumber(user.money) >= tonumber(amount)) then
 			local player = user.identifier
 			user:removeMoney(amount)
-			TriggerEvent('es:getPlayerFromId', toPlayer, function(recipient)
+			TriggerEvent('sarp:getPlayerFromId', toPlayer, function(recipient)
 				recipient:addMoney(amount)
 				TriggerClientEvent("sarp:notify", source, "CHAR_BANK_MAZE", 1, "Maze Bank", false, "Gave cash: ~r~-$".. amount .." ~n~~s~Wallet: ~g~$" .. user.money)
 				TriggerClientEvent("sarp:notify", toPlayer, "CHAR_BANK_MAZE", 1, "Maze Bank", false, "Received cash: ~g~$".. amount .." ~n~~s~Wallet: ~g~$" .. recipient.money)
@@ -198,8 +198,8 @@ AddEventHandler('bank:givecash', function(toPlayer, amount)
 	end)
 end)
 
-AddEventHandler('es:playerLoaded', function(source)
-    TriggerEvent('es:getPlayerFromId', source, function(user)
+AddEventHandler('sarp:playerLoaded', function(source)
+    TriggerEvent('sarp:getPlayerFromId', source, function(user)
         local player = user.identifier
         local bankbalance = bankBalance(player)
         TriggerClientEvent("banking:updateBalance", source, bankbalance)

@@ -63,9 +63,9 @@ end)
 
 RegisterServerEvent('sarp:spawn')
 AddEventHandler('sarp:spawn', function()
-	TriggerEvent('es:getPlayerFromId', source, function(user)
+	TriggerEvent('sarp:getPlayerFromId', source, function(user)
 		if(user)then
-			TriggerClientEvent('es:activateMoney', source, user.money)
+			TriggerClientEvent('sarp:activateMoney', source, user.money)
 		end
 	end)
 

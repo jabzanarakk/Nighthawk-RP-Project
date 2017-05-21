@@ -15,8 +15,8 @@ end)
 
 local justJoined = {}
 
-RegisterServerEvent('es:sessionStart')
-AddEventHandler('es:sessionStart', function()
+RegisterServerEvent('sarp:sessionStart')
+AddEventHandler('sarp:sessionStart', function()
 	local identifier = GetPlayerIdentifiers(source)[1]
 	if(Users[source] == nil)then
 		debugMsg("DB API | Loading user: " .. GetPlayerName(source))

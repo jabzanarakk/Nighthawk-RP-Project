@@ -56,7 +56,7 @@ function Player:setMoney(m)
 		TriggerClientEvent("es:removedMoney", self.source, math.abs(prevMoney - newMoney))
 	end
 
-	TriggerClientEvent('es:activateMoney', self.source , self.money)
+	TriggerClientEvent('sarp:activateMoney', self.source , self.money)
 end
 
 -- Adds to player money (required to call this from now)
@@ -66,7 +66,7 @@ function Player:addMoney(m)
 	self.money = newMoney
 
 	TriggerClientEvent("es:addedMoney", self.source, m)
-	TriggerClientEvent('es:activateMoney', self.source , self.money)
+	TriggerClientEvent('sarp:activateMoney', self.source , self.money)
 end
 
 -- Removes from player money (required to call this from now)
@@ -76,7 +76,7 @@ function Player:removeMoney(m)
 	self.money = newMoney
 
 	TriggerClientEvent("es:removedMoney", self.source, m)
-	TriggerClientEvent('es:activateMoney', self.source , self.money)
+	TriggerClientEvent('sarp:activateMoney', self.source , self.money)
 end
 
 -- Player session variables
