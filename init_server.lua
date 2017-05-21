@@ -70,7 +70,11 @@ AddEventHandler('sarp:spawn', function()
 	end)
 
 	local pos = nil
-    pos = user.coords
+    local identifier = GetPlayerIdentifiers(source)[1]
+    TriggerEvent('sarp:getLastPos', identifier, function(cb)
+        local tempPos = json.decode(cb)
+        pos.x, pos.y, pos.z = tempPos[1], tempPos[2], tempPos[3]
+    end)
     if #pos ~= 3 then
         pos = SARP_SETTINGS.defaultArea.spawns[ math.random( #SARP_SETTINGS.defaultArea.spawns ) ]
     end

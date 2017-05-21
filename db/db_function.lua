@@ -14,7 +14,7 @@ function LoadUser(identifier, source, new)
 	local result = MySQL:getResults(executed_query, {'permission_level', 'money', 'identifier', 'group', 'pos'}, "identifier")
 
 	local group = groups[result[1].group]
-	Users[source] = Player(source, result[1].permission_level, result[1].money, result[1].identifier, result[1].pos, group)
+	Users[source] = Player(source, result[1].permission_level, result[1].money, result[1].identifier, group)
 
 	TriggerClientEvent('sarp:setPlayerDecorator', source, 'rank', Users[source]:getPermissions())
     
@@ -65,10 +65,10 @@ function isLoggedIn(source)
 	end
 end
 
-function registerUser(identifier, source)
+function registerUser(identifier, name, source)
 	-- Inserting Default User Account Stats
-	MySQL:executeQuery("INSERT INTO users (`identifier`, `permission_level`, `money`, `group`) VALUES ('@username', '0', '@money', 'user')",
-	{['@username'] = identifier, ['@money'] = LSRP_SETTINGS.startMoney})
+	MySQL:executeQuery("INSERT INTO users (`identifier`, `name`, `permission_level`, `money`, `group`) VALUES ('@username', '@name', '0', '@money', 'user')",
+	{['@username'] = identifier, ['@name'] = name, ['@money'] = SARP_SETTINGS.startMoney})
 	LoadUser(identifier, source, true)
 end
 
@@ -145,4 +145,15 @@ AddEventHandler("sarp:getAllPlayers", function(cb)
 	else
 		cb(nil)
 	end
+end)
+
+AddEventHandler("sarp:getLastPos", function(cb)
+    local executed_query = MySQL:executeQuery("SELECT * FROM users WHERE identifier = '@id'", {['@id'] = identifier})
+    local result = MySQL:getResults(executed_query, {'permission_level', 'pos'}, "identifier")
+    
+    if(result)then
+        cb(result[1].pos)
+    else
+        cb(nil)
+    end
 end)

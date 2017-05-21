@@ -9,22 +9,37 @@ Citizen.CreateThread(function()
 	end
 end)
 
+local loaded = false
+local cashy = 0
+local oldPos
+
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(1000)
+		local pos = GetEntityCoords(GetPlayerPed(-1))
+
+		if(oldPos ~= pos)then
+			TriggerServerEvent('sarp:updatePositions', pos.x, pos.y, pos.z)
+
+			if(loaded)then
+				SendNUIMessage({
+					setmoney = true,
+					money = cashy
+				})
+
+				loaded = false
+			end
+			oldPos = pos
+		end
+	end
+end)
+
 AddEventHandler('onClientMapStart', function()
     exports.spawnmanager:setAutoSpawn(true)
     exports.spawnmanager:forceRespawn()
     
     exports.spawnmanager:setAutoSpawnCallback(function()
-        Citizen.CreateThread(function()
-            while true do
-                Citizen.Wait(3)
-                TriggerServerEvent('es:getPlayerFromId', source, function(user)
-                    if user ~= nil then
-                        TriggerServerEvent('sarp:spawn')
-                        return
-                    end
-                end)
-            end
-        end)
+        TriggerServerEvent('sarp:spawn')
     end)
 end)
 
