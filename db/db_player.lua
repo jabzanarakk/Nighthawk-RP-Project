@@ -26,7 +26,7 @@ end
 
 -- Setting them
 function Player:setPermissions(p)
-	TriggerEvent("es:setPlayerData", self.source, "permission_level", p, function(response, success)
+	TriggerEvent("sarp:setPlayerData", self.source, "permission_level", p, function(response, success)
 		self.permission_level = p
 	end)
 end
@@ -51,9 +51,9 @@ function Player:setMoney(m)
 	self.money = m
 
 	if(prevMoney < newMoney)then
-		TriggerClientEvent("es:addedMoney", self.source, math.abs(newMoney - prevMoney))
+		TriggerClientEvent("sarp:addedMoney", self.source, math.abs(newMoney - prevMoney))
 	else
-		TriggerClientEvent("es:removedMoney", self.source, math.abs(prevMoney - newMoney))
+		TriggerClientEvent("sarp:removedMoney", self.source, math.abs(prevMoney - newMoney))
 	end
 
 	TriggerClientEvent('sarp:activateMoney', self.source , self.money)
@@ -65,7 +65,7 @@ function Player:addMoney(m)
 
 	self.money = newMoney
 
-	TriggerClientEvent("es:addedMoney", self.source, m)
+	TriggerClientEvent("sarp:addedMoney", self.source, m)
 	TriggerClientEvent('sarp:activateMoney', self.source , self.money)
 end
 
@@ -75,7 +75,7 @@ function Player:removeMoney(m)
 
 	self.money = newMoney
 
-	TriggerClientEvent("es:removedMoney", self.source, m)
+	TriggerClientEvent("sarp:removedMoney", self.source, m)
 	TriggerClientEvent('sarp:activateMoney', self.source , self.money)
 end
 

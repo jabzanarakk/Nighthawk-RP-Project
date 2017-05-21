@@ -82,7 +82,7 @@ function renameCheck(identifier, name)
     return true
 end
 
-AddEventHandler("es:setPlayerData", function(user, k, v, cb)
+AddEventHandler("sarp:setPlayerData", function(user, k, v, cb)
 	if(Users[user])then
 		if(Users[user][k])then
 
@@ -106,14 +106,14 @@ AddEventHandler("es:setPlayerData", function(user, k, v, cb)
 	end
 end)
 
-AddEventHandler("es:setPlayerDataId", function(user, k, v, cb)
+AddEventHandler("sarp:setPlayerDataId", function(user, k, v, cb)
 	MySQL:executeQuery("UPDATE users SET @key='@value' WHERE identifier = '@identifier'",
 	{['@key'] = k, ['@value'] = v, ['@identifier'] = user})
 
 	cb("Player data edited.", true)
 end)
 
-AddEventHandler("es:getPlayerFromId", function(user, cb)
+AddEventHandler("sarp:getPlayerFromId", function(user, cb)
 	if(Users)then
 		if(Users[user])then
 			cb(Users[user])
@@ -125,7 +125,7 @@ AddEventHandler("es:getPlayerFromId", function(user, cb)
 	end
 end)
 
-AddEventHandler("es:getPlayerFromIdentifier", function(identifier, cb)
+AddEventHandler("sarp:getPlayerFromIdentifier", function(identifier, cb)
 	local executed_query = MySQL:executeQuery("SELECT * FROM users WHERE identifier = '@name'", {['@name'] = identifier})
 	local result = MySQL:getResults(executed_query, {'permission_level', 'money', 'identifier', 'group'}, "identifier")
 
@@ -136,7 +136,7 @@ AddEventHandler("es:getPlayerFromIdentifier", function(identifier, cb)
 	end
 end)
 
-AddEventHandler("es:getAllPlayers", function(cb)
+AddEventHandler("sarp:getAllPlayers", function(cb)
 	local executed_query = MySQL:executeQuery("SELECT * FROM users", {})
 	local result = MySQL:getResults(executed_query, {'permission_level', 'money', 'identifier', 'group'}, "identifier")
 
@@ -150,7 +150,7 @@ end)
 -- Function to update player money every 60 seconds.
 local function savePlayerMoney()
 	SetTimeout(60000, function()
-		TriggerEvent("es:getPlayers", function(users)
+		TriggerEvent("sarp:getPlayers", function(users)
 			for k,v in pairs(users)do
 				MySQL:executeQuery("UPDATE users SET `money`='@value' WHERE identifier = '@identifier'",
 			    {['@value'] = v.money, ['@identifier'] = v.identifier})

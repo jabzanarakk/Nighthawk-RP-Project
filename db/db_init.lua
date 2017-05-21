@@ -4,7 +4,7 @@ newbie = {}
 
 AddEventHandler('playerDropped', function()
 	if(Users[source])then
-		TriggerEvent("es:playerDropped", Users[source])
+		TriggerEvent("sarp:playerDropped", Users[source])
 
 		MySQL:executeQuery("UPDATE users SET `money`='@value', `pos`='@pos' WHERE identifier = '@identifier'",
 		{['@value'] = 0, ['@identifier'] = Users[source].identifier, ['@pos'] = Users[source].coords})

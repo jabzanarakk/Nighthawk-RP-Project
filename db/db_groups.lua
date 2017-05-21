@@ -52,7 +52,7 @@ admin = Group("admin", "user")
 superadmin = Group("superadmin", "admin")
 
 -- Custom groups
-AddEventHandler("es:addGroup", function(group, inherit, cb)
+AddEventHandler("sarp:addGroup", function(group, inherit, cb)
 	if(inherit == 'user')then
 		admin.inherits = group
 	end
@@ -63,6 +63,6 @@ AddEventHandler("es:addGroup", function(group, inherit, cb)
 end)
 
 -- Get all groups
-AddEventHandler("es:getAllGroups", function(cb)
+AddEventHandler("sarp:getAllGroups", function(cb)
 	cb(groups)
 end)
