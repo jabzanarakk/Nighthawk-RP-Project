@@ -5,6 +5,9 @@ LSRP_SETTINGS.upChar = { "65", "66", "67", "68", "69", "70", "71", "72", "73", "
 LSRP_SETTINGS.lowChar = { "97", "98", "99", "100", "101", "102", "103", "104", "105", "106", "107", "108", "109", "110", "111", "112", "113", "114", "115", "116", "117", "118", "119", "120", "121", "122"}
 
 LSRP_SETTINGS.dbName = "sarp_01" -- define local database name for server
+LSRP_SETTINGS.dbIP = "127.0.0.1"
+LSRP_SETTINGS.dbUser = "Eagleone"
+LSRP_SETTINGS.dbPass = "129657"
 
 LSRP_SETTINGS.startMoney = 100
 
