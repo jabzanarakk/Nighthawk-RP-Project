@@ -146,19 +146,3 @@ AddEventHandler("sarp:getAllPlayers", function(cb)
 		cb(nil)
 	end
 end)
-
--- Function to update player money every 60 seconds.
-local function savePlayerMoney()
-	SetTimeout(60000, function()
-		TriggerEvent("sarp:getPlayers", function(users)
-			for k,v in pairs(users)do
-				MySQL:executeQuery("UPDATE users SET `money`='@value' WHERE identifier = '@identifier'",
-			    {['@value'] = v.money, ['@identifier'] = v.identifier})
-			end
-		end)
-
-		savePlayerMoney()
-	end)
-end
-
-savePlayerMoney()
