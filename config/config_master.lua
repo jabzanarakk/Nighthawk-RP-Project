@@ -13,7 +13,7 @@ SARP_SETTINGS.debugInformation = true
 SARP_SETTINGS.payday = 50
 SARP_SETTINGS.paydayInterval = 60
 
-SARP_SETTINGS.startingMoney = 100
+SARP_SETTINGS.startMoney = 100
 
 -- Chat tags, please note this requires changing for your own chat resource.
 SARP_SETTINGS.chatTags = {
