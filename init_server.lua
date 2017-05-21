@@ -54,6 +54,38 @@ AddEventHandler('playerConnecting', function(name, setReason)
     else
         badNameKick ()
     end
+    -- Check Rename
+    local identifier = GetPlayerIdentifiers(source)[1]
+    if hasAccount(identifier) then
+        if renameCheck(identifier, name) then
+            setReason('ชื่อของคุณไม่ตรงกับที่สมัครใว้ หากพบปัญหา ติดต่อได้ที่ http://sarp.eaglege.com/contact')
+            CancelEvent()
+            print ('Rename Kick ' .. name)
+        end
+    end
+end)
+
+RegisterServerEvent('es:sessionStart')
+AddEventHandler('es:sessionStart', function()
+	local identifiers = GetPlayerIdentifiers(source)
+	for i = 1, #identifiers do
+		if(Users[source] == nil)then
+			debugMsg("DB API | Loading user: " .. GetPlayerName(source))
+
+			local identifier = identifiers[i]
+            if not hasAccount(identifier) then
+                registerUser(identifier, source)
+            else
+                LoadUser(identifier, source)
+            end
+
+			justJoined[source] = true
+
+			if(settings.defaultSettings.pvpEnabled)then
+				TriggerClientEvent("es:enablePvp", source)
+			end
+		end
+	end
 end)
 
 RegisterServerEvent('sarp:spawn')
