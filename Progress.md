@@ -2,6 +2,8 @@
 
 Active System
 - Roleplay Name Checking
+- Utility Function
+- Anti Rename
 
 Prototype System
 - Advanced Banking
@@ -11,9 +13,12 @@ In Development System
 - Advanced Spawn Manager
 
 Plan System
-- Cop
+- Cop (LSPD, LSSD, LSHP, SAPR, SASPA)
 - Taxi
 - EMS
+- FIB
+- IAA
+- DOA
 - Weapons Shop
 - Car Shop
 - Car Garage
@@ -28,11 +33,11 @@ Plan System
 - Gang
 - House
 - Business
-- Anti Rename
 - Jail
 - Stats (Water, Food, Health)
 - Advanced Car
 - Disable vehicles and peds
+- Advanced Player Skin
 
 Waiting for script Support
 - Database API
