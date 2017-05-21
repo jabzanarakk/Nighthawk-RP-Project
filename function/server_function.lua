@@ -87,3 +87,5 @@ function debugMsg (msg)
         print("SARP DEBUG: " .. msg)
     end
 end
+
+AddEventHandler("sarp:debugMsg", debugMsg)
