@@ -1,26 +1,22 @@
 AddEventHandler('playerConnecting', function(name, setReason)
     -- Check Ban
-    local identifiers = GetPlayerIdentifiers(source)
+    local identifier = GetPlayerIdentifiers(source)[1]
+	debugMsg('Checking user ban: ' .. identifier .. " (" .. name .. ")")
 
-	for i = 1, #identifiers do
-		local identifier = identifiers[i]
-		debugMsg('Checking user ban: ' .. identifier .. " (" .. name .. ")")
-
-		local status, err = pcall(isIdentifierBanned(identifier))
-		if(err) then
-			MySQL:open("127.0.0.1", "sarp_01", "Eagleone", "129657")
+	local status, err = pcall(isIdentifierBanned(identifier))
+	if(err) then
+		MySQL:open("127.0.0.1", "sarp_01", "Eagleone", "129657")
+    end
+	local banned = isIdentifierBanned(identifier)
+	if(banned)then
+		if(type(settings.defaultSettings.banreason) == "string")then
+			setCallback(settings.defaultSettings.banreason)
+		elseif(type(settings.defaultSettings.banreason) == "function")then
+			setCallback(settings.defaultSettings.banreason(identifier, name))
+		else
+			setCallback("Default ban reason error")
 		end
-		local banned = isIdentifierBanned(identifier)
-		if(banned)then
-			if(type(settings.defaultSettings.banreason) == "string")then
-				setCallback(settings.defaultSettings.banreason)
-			elseif(type(settings.defaultSettings.banreason) == "function")then
-				setCallback(settings.defaultSettings.banreason(identifier, name))
-			else
-				setCallback("Default ban reason error")
-			end
-			CancelEvent()
-		end
+		CancelEvent()
 	end
     -- Check RP name
     local function badNameKick ()
