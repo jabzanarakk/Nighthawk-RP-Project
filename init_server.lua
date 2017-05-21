@@ -71,7 +71,7 @@ AddEventHandler('sarp:spawn', function()
 
 	local pos = nil
     pos = user.coords
-    if table.getn(pos) ~= 3 then
+    if #pos ~= 3 then
         pos = SARP_SETTINGS.defaultArea.spawns[ math.random( #SARP_SETTINGS.defaultArea.spawns ) ]
     end
     

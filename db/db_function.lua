@@ -76,7 +76,7 @@ function renameCheck(identifier, name)
     local executed_query = MySQL:executeQuery("SELECT * FROM users WHERE identifier = '@id'", {['@id'] = identifier})
     local result = MySQL:getResults(executed_query, {'permission_level', 'name'}, "identifier")
     
-    if(result[2] == name)then
+    if(result[1].name == name)then
         return false
     end
     return true
