@@ -8,8 +8,10 @@ dependency 'essentialmode'
 
 -- lib 
 ui_page 'html/banking/ui.html'
+ui_page 'html/banking/ui2.html'
 files {
 	'html/banking/ui.html',
+    'html/banking/ui2.html',
 	'html/banking/pricedown.ttf',
 	'html/banking/bank-icon.png',
 	'html/banking/logo.png',
