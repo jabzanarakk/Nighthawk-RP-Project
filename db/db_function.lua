@@ -1,13 +1,13 @@
 -- Loading MySQL Class
 require "resources/sarp/lib/MySQL"
 
-local dbName = SARP_SETTINGS.dbName
 local dbIP = SARP_SETTINGS.dbIP
+local dbName = SARP_SETTINGS.dbName
 local dbUser = SARP_SETTINGS.dbUser
 local dbPass = SARP_SETTINGS.dbPass
 
 -- MySQL:open("IP", "databasname", "user", "password")
-MySQL:open(dbName, dbIP, dbUser, dbPass)
+MySQL:open(dbIP, dbName, dbUser, dbPass)
 
 function LoadUser(identifier, source, new)
 	local executed_query = MySQL:executeQuery("SELECT * FROM users WHERE identifier = '@name'", {['@name'] = identifier})
