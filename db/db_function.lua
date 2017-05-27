@@ -1,12 +1,11 @@
 -- Loading MySQL Class
 require "resources/sarp/lib/MySQL"
 
-local dbIP = SARP_SETTINGS.dbIP
-local dbName = SARP_SETTINGS.dbName
-local dbUser = SARP_SETTINGS.dbUser
-local dbPass = SARP_SETTINGS.dbPass
-
-function dbOpen()
+function dbOpen()  
+    local dbIP = SARP_SETTINGS.dbIP
+    local dbName = SARP_SETTINGS.dbName
+    local dbUser = SARP_SETTINGS.dbUser
+    local dbPass = SARP_SETTINGS.dbPass
     -- MySQL:open("IP", "databasname", "user", "password")
     MySQL:open(dbIP, dbName, dbUser, dbPass)
 end
