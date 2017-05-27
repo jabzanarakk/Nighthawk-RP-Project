@@ -35,12 +35,7 @@ Citizen.CreateThread(function()
 end)
 
 AddEventHandler('onClientMapStart', function()
-    exports.spawnmanager:setAutoSpawn(true)
     exports.spawnmanager:forceRespawn()
-    
-    exports.spawnmanager:setAutoSpawnCallback(function()
-        TriggerServerEvent('sarp:spawn')
-    end)
 end)
 
 RegisterNetEvent("sarp:notify")

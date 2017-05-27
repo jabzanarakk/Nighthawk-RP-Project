@@ -4,7 +4,7 @@ AddEventHandler('playerConnecting', function(name, setReason)
 	debugMsg('Checking user ban: ' .. identifier .. " (" .. name .. ")")
 
 	local status, err = pcall(isIdentifierBanned(identifier))
-	if(err) then
+	if(err)then
 		dbOpen()
     end
 	local banned = isIdentifierBanned(identifier)
@@ -51,7 +51,6 @@ AddEventHandler('playerConnecting', function(name, setReason)
         badNameKick ()
     end
     -- Check Rename
-    local identifier = GetPlayerIdentifiers(source)[1]
     if hasAccount(identifier) then
         if renameCheck(identifier, name) then
             setReason('ชื่อของคุณไม่ตรงกับที่สมัครใว้ หากพบปัญหา ติดต่อได้ที่ http://sarp.eaglege.com/contact')
@@ -59,30 +58,4 @@ AddEventHandler('playerConnecting', function(name, setReason)
             print ('Rename Kick ' .. name)
         end
     end
-end)
-
-RegisterServerEvent('sarp:spawn')
-AddEventHandler('sarp:spawn', function()
-	TriggerEvent('sarp:getPlayerFromId', source, function(user)
-		if(user)then
-			TriggerClientEvent('sarp:activateMoney', source, user.money)
-		end
-	end)
-
-	local pos = nil
-    local identifier = GetPlayerIdentifiers(source)[1]
-    TriggerEvent('sarp:getLastPos', identifier, function(cb)
-        local tempPos = json.decode(cb)
-        pos.x, pos.y, pos.z = tempPos[1], tempPos[2], tempPos[3]
-    end)
-    if #pos ~= 3 then
-        pos = SARP_SETTINGS.defaultArea.spawns[ math.random( #SARP_SETTINGS.defaultArea.spawns ) ]
-    end
-    
-    if newbie[source] then
-        pos = SARP_SETTINGS.spawnAreas.docks.spawns[ math.random( #SARP_SETTINGS.spawnAreas.docks.spawns ) ]
-    end
-
-	local model = "mp_m_freemode_01"
-	TriggerClientEvent('sarp:spawnPlayer', source, pos.x, pos.y, pos.z, model)
 end)

@@ -1,6 +1,5 @@
 -- Server mem
 Users = {}
-newbie = {}
 
 require "resources/sarp/lib/MySQL"
 MySQL:open("127.0.0.1", "sarp_01", "Eagleone", "129657")
@@ -17,8 +16,6 @@ AddEventHandler('playerDropped', function()
 	end
 end)
 
-local justJoined = {}
-
 RegisterServerEvent('sarp:sessionStart')
 AddEventHandler('sarp:sessionStart', function()
 	local identifier = GetPlayerIdentifiers(source)[1]
@@ -30,7 +27,6 @@ AddEventHandler('sarp:sessionStart', function()
         else
             LoadUser(identifier, source)
         end
-		justJoined[source] = true
 	end
 end)
 

@@ -17,12 +17,21 @@ function LoadUser(identifier, source, new)
 
 	local group = groups[result[1].group]
 	Users[source] = Player(source, result[1].permission_level, result[1].money, result[1].identifier, group)
-
-	TriggerClientEvent('sarp:setPlayerDecorator', source, 'rank', Users[source]:getPermissions())
     
     if new then
-        newbie[source] = true
+        local pos = SARP_SETTINGS.spawnAreas.docks.spawns[ math.random( #SARP_SETTINGS.spawnAreas.docks.spawns ) ]
+    else
+        local loadPos = {}
+        loadPos[source] = json.decode(result[1].pos)
+        if #loadPos[source] ~= 3 or loadPos[source][1] == 0 or loadPos[source][2] == 0 or loadPos[source][3] == 0 then
+            local pos = SARP_SETTINGS.defaultArea.spawns[ math.random( #SARP_SETTINGS.defaultArea.spawns ) ]
+        else
+            local pos = {["x"] = loadPos[source][1], ["y"] = loadPos[source][2], ["z"] = loadPos[source][3]}
+        end
     end
+    
+    local model = "a_m_y_skater_02"
+    TriggerClientEvent('sarp:spawnPlayer', source, pos.x, pos.y, pos.z, model)
 end
 
 function isIdentifierBanned(id)
@@ -147,15 +156,4 @@ AddEventHandler("sarp:getAllPlayers", function(cb)
 	else
 		cb(nil)
 	end
-end)
-
-AddEventHandler("sarp:getLastPos", function(cb)
-    local executed_query = MySQL:executeQuery("SELECT * FROM users WHERE identifier = '@id'", {['@id'] = identifier})
-    local result = MySQL:getResults(executed_query, {'permission_level', 'pos'}, "identifier")
-    
-    if(result)then
-        cb(result[1].pos)
-    else
-        cb(nil)
-    end
 end)
