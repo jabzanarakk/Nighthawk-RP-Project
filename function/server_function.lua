@@ -60,14 +60,14 @@ function upCharCheck (str)
 end
 
 function stringsplit(self, delimiter)
-  local a = self:Split(delimiter)
-  local t = {}
+    local a = self:Split(delimiter)
+    local t = {}
 
-  for i = 0, #a - 1 do
-     table.insert(t, a[i])
-  end
+    for i = 0, #a - 1 do
+        table.insert(t, a[i])
+    end
 
-  return t
+    return t
 end
 
 function startswith(String,Start)
