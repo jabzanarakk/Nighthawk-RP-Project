@@ -6,8 +6,11 @@ local dbName = SARP_SETTINGS.dbName
 local dbUser = SARP_SETTINGS.dbUser
 local dbPass = SARP_SETTINGS.dbPass
 
--- MySQL:open("IP", "databasname", "user", "password")
-MySQL:open(dbIP, dbName, dbUser, dbPass)
+function dbOpen()
+    -- MySQL:open("IP", "databasname", "user", "password")
+    MySQL:open(dbIP, dbName, dbUser, dbPass)
+end
+dbOpen()
 
 function LoadUser(identifier, source, new)
 	local executed_query = MySQL:executeQuery("SELECT * FROM users WHERE identifier = '@name'", {['@name'] = identifier})

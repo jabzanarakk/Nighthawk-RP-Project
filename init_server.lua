@@ -5,7 +5,7 @@ AddEventHandler('playerConnecting', function(name, setReason)
 
 	local status, err = pcall(isIdentifierBanned(identifier))
 	if(err) then
-		MySQL:open("127.0.0.1", "sarp_01", "Eagleone", "129657")
+		dbOpen()
     end
 	local banned = isIdentifierBanned(identifier)
 	if(banned)then
