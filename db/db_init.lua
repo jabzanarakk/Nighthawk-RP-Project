@@ -21,7 +21,7 @@ AddEventHandler('sarp:sessionStart', function()
 	local identifier = GetPlayerIdentifiers(source)[1]
 	if(Users[source] == nil)then
         local name = GetPlayerName(source)
-		debugMsg("DB API | Loading user: " .. name)
+		debugMsg("DB API | Loading user: " .. identifier)
         if not hasAccount(identifier) then
             registerUser(identifier, name, source)
         else
