@@ -78,7 +78,7 @@ end
 
 function registerUser(identifier, name, source)
 	-- Inserting Default User Account Stats
-	MySQL:executeQuery("INSERT INTO users (`identifier`, `name`, `permission_level`, `money`, `group`) VALUES ('@username', '@name', '0', '@money', 'user')",
+	MySQL:executeQuery("INSERT INTO users (`identifier`, `name`, `permission_level`, `money`, `group`, `register_date`) VALUES ('@username', '@name', '0', '@money', 'user', now())",
 	{['@username'] = identifier, ['@name'] = name, ['@money'] = SARP_SETTINGS.startMoney})
 	LoadUser(identifier, source, true)
 end
