@@ -10,7 +10,7 @@ AddEventHandler('playerDropped', function()
         
         local LastPos = "{" .. Users[source].coords.x .. ", " .. Users[source].coords.y .. ", " .. Users[source].coords.z .. "}"
 		MySQL:executeQuery("UPDATE users SET `money`='@value', `pos`='@pos' WHERE identifier = '@identifier'",
-		{['@value'] = 0, ['@identifier'] = Users[source].identifier, ['@pos'] = LastPos})
+		{['@value'] = Users[source].money, ['@identifier'] = Users[source].identifier, ['@pos'] = LastPos})
 
 		Users[source] = nil
 	end
