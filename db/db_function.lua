@@ -32,6 +32,8 @@ function LoadUser(identifier, source, new)
     end
     
     local model = "a_m_y_skater_02"
+    TriggerClientEvent('sarp:activateMoney', source , Users[source].money)
+    TriggerEvent('sarp:playerLoaded', source)
     TriggerClientEvent('sarp:spawnPlayer', source, pos.x, pos.y, pos.z, model)
 end
 

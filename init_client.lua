@@ -51,3 +51,36 @@ RegisterNetEvent('sarp:spawnPlayer')
 AddEventHandler('sarp:spawnPlayer', function(x, y, z, model)
 	exports.spawnmanager:spawnPlayer({x = x, y = y, z = z, model = GetHashKey(model)})
 end)
+
+RegisterNetEvent('sarp:activateMoney')
+AddEventHandler('sarp:activateMoney', function(e)
+	SendNUIMessage({
+		setmoney = true,
+		money = e
+	})
+end)
+
+RegisterNetEvent("sarp:addedMoney")
+AddEventHandler("sarp:addedMoney", function(m)
+	SendNUIMessage({
+		addcash = true,
+		money = m
+	})
+
+end)
+
+RegisterNetEvent("sarp:removedMoney")
+AddEventHandler("sarp:removedMoney", function(m)
+	SendNUIMessage({
+		removecash = true,
+		money = m
+	})
+end)
+
+RegisterNetEvent("sarp:setMoneyDisplay")
+AddEventHandler("sarp:setMoneyDisplay", function(val)
+	SendNUIMessage({
+		setDisplay = true,
+		display = val
+	})
+end)

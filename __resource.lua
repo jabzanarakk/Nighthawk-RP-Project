@@ -5,10 +5,9 @@ resource_manifest_version '77731fab-63ca-442c-a67b-abc70f28dfa5'
 
 -- lib 
 ui_page 'html/banking/ui.html'
-ui_page 'html/banking/ui2.html'
+
 files {
 	'html/banking/ui.html',
-    'html/banking/ui2.html',
 	'html/banking/pricedown.ttf',
 	'html/banking/bank-icon.png',
 	'html/banking/logo.png',

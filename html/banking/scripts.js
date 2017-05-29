@@ -76,6 +76,34 @@ $(document).ready(function(){
     // Listen for NUI Events
     window.addEventListener('message', function(event){
         var item = event.data;
+        if(item.setmoney == true)
+            document.getElementById("cash").innerHTML = "<div><font style='color: rgb(0, 125, 0); font-weight: 700; margin-right: 6px;'>$</font>" + addCommas(item.money);
+        if(item.addcash == true){
+            $(".tiny").remove();
+
+            var element = $("<div class='tiny'>+<font style='color: rgb(0, 125, 0); font-weight: 700; margin-right: 6px;'>$</font>"+addCommas(item.money)+"</div>")
+            $("#money").append(element)
+
+            setTimeout(function(){
+                $(element).fadeOut(600, function() { $(this).remove(); })
+            }, 1000)
+        }
+        if(item.removecash == true){
+            $(".tiny").remove();
+			
+            var element = $("<div class='tiny'>-<font style='color: rgb(250, 0, 0); font-weight: 700; margin-right: 6px;'>$</font>"+addCommas(item.money)+"</div>")
+            $("#money").append(element)
+
+            setTimeout(function(){
+                $(element).fadeOut(600, function() { $(this).remove(); })
+            }, 1000)
+        }
+        if(item.removeStartWindow == true){
+            $("#starter").remove();
+        }
+        if(item.setDisplay == true){
+            $("#money").css('opacity', item.display)
+        }
         // Update HUD Balance
         if(item.updateBalance == true) {
             $('.balance').html('<p id="balance"><img id="icon" src="bank-icon.png" alt=""/>' +addGaps(event.data.balance)+'</p>');
