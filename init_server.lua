@@ -1,7 +1,26 @@
 AddEventHandler('playerConnecting', function(name, setReason)
+    -- Check Ban
+    local identifier = GetPlayerIdentifiers(source)[1]
+	debugMsg('Checking user ban: ' .. identifier .. " (" .. name .. ")")
+
+	local status, err = pcall(isIdentifierBanned(identifier))
+	if(err)then
+		dbOpen()
+    end
+	local banned = isIdentifierBanned(identifier)
+	if(banned)then
+		if(type(settings.defaultSettings.banreason) == "string")then
+			setCallback(settings.defaultSettings.banreason)
+		elseif(type(settings.defaultSettings.banreason) == "function")then
+			setCallback(settings.defaultSettings.banreason(identifier, name))
+		else
+			setCallback("Default ban reason error")
+		end
+		CancelEvent()
+	end
     -- Check RP name
     local function badNameKick ()
-        setReason('ชื่อของคุณไม่สอดคล้องกับนโยบายความเป็น Role Play ของเซิฟเวอร์เรา ตัวอย่างชื่อ  "Jack Winter", "Somchai Sabyedee" สามารถเข้าไปอ่านข้อมูลเพิ่มเติมได้ที่ http://lsrp.eaglege.com/rules')
+        setReason('ชื่อของคุณไม่สอดคล้องกับนโยบายความเป็น Role Play ของเซิฟเวอร์เรา ตัวอย่างชื่อ  "Jack Winter", "Somchai Sabyedee" สามารถเข้าไปอ่านข้อมูลเพิ่มเติมได้ที่ http://sarp.eaglege.com/rules')
         CancelEvent()
         print ('Bad Role Play name ' .. name)
     end
@@ -30,5 +49,13 @@ AddEventHandler('playerConnecting', function(name, setReason)
         end
     else
         badNameKick ()
+    end
+    -- Check Rename
+    if hasAccount(identifier) then
+        if renameCheck(identifier, name) then
+            setReason('ชื่อของคุณไม่ตรงกับที่สมัครใว้ หากพบปัญหา ติดต่อได้ที่ http://sarp.eaglege.com/contact')
+            CancelEvent()
+            print ('Rename Kick ' .. name)
+        end
     end
 end)

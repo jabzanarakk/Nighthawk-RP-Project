@@ -1,5 +1,5 @@
-local upChar = LSRP_SETTINGS.upChar
-local lowChar = LSRP_SETTINGS.lowChar
+local upChar = SARP_SETTINGS.upChar
+local lowChar = SARP_SETTINGS.lowChar
 
 function inArray (array, val)
     for index, value in ipairs(array) do
@@ -58,3 +58,34 @@ function upCharCheck (str)
         end
     end
 end
+
+function stringsplit(self, delimiter)
+    local a = self:Split(delimiter)
+    local t = {}
+
+    for i = 0, #a - 1 do
+        table.insert(t, a[i])
+    end
+
+    return t
+end
+
+function startswith(String,Start)
+   return string.sub(String,1,string.len(Start))==Start
+end
+
+function returnIndexesInTable(t)
+	local i = 0;
+	for _,v in pairs(t)do
+ 		i = i + 1
+	end
+	return i;
+end
+
+function debugMsg (msg)
+    if(SARP_SETTINGS.debugInformation and msg)then
+        print("SARP DEBUG: " .. msg)
+    end
+end
+
+AddEventHandler("sarp:debugMsg", debugMsg)
