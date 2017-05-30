@@ -25,7 +25,7 @@ server_script 'init_server.lua'
 server_script 'config/config_master.lua'
 
 -- Function
-server_script 'function/server_function.lua'
+server_script 'core/function/server_functions.lua'
 
 -- Database
 server_script 'db/db_function.lua'
