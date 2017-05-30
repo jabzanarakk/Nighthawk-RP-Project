@@ -39,6 +39,7 @@ Plan System
 - Disable vehicles and peds
 - Advanced Player Skin
 - Ipl load
+- Action Menu
 
 Waiting for script Support
-- Database API
+- Official Database API
