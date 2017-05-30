@@ -76,11 +76,3 @@ AddEventHandler("sarp:removedMoney", function(m)
 		money = m
 	})
 end)
-
-RegisterNetEvent("sarp:setMoneyDisplay")
-AddEventHandler("sarp:setMoneyDisplay", function(val)
-	SendNUIMessage({
-		setDisplay = true,
-		display = val
-	})
-end)

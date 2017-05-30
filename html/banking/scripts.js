@@ -76,33 +76,26 @@ $(document).ready(function(){
     // Listen for NUI Events
     window.addEventListener('message', function(event){
         var item = event.data;
+        // Update HUD Money
         if(item.setmoney == true)
-            document.getElementById("cash").innerHTML = "<div><font style='color: rgb(0, 125, 0); font-weight: 700; margin-right: 6px;'>$</font>" + addCommas(item.money);
+            $('.cash').html('<p id="cash"><font style="color: rgb(0, 125, 0);">$</font>' + addGaps(event.data.money) + '</p>');
+        // Trigger Add Cash Popup
         if(item.addcash == true){
-            $(".tiny").remove();
-
-            var element = $("<div class='tiny'>+<font style='color: rgb(0, 125, 0); font-weight: 700; margin-right: 6px;'>$</font>"+addCommas(item.money)+"</div>")
-            $("#money").append(element)
+            var element = $('<p id="add-balance"><span class="pre">+</span><span class="green"> $ </span>' +addGaps(event.data.money)+'</p>');
+            $(".money").append(element);
 
             setTimeout(function(){
                 $(element).fadeOut(600, function() { $(this).remove(); })
             }, 1000)
         }
+        // Trigger Remove Cash Popup
         if(item.removecash == true){
-            $(".tiny").remove();
-			
-            var element = $("<div class='tiny'>-<font style='color: rgb(250, 0, 0); font-weight: 700; margin-right: 6px;'>$</font>"+addCommas(item.money)+"</div>")
-            $("#money").append(element)
-
+            var element = $('<p id="add-balance"><span class="pre">-</span><span class="red"> $ </span>' +addGaps(event.data.money)+'</p>');
+            $(".money").append(element);
+            
             setTimeout(function(){
                 $(element).fadeOut(600, function() { $(this).remove(); })
             }, 1000)
-        }
-        if(item.removeStartWindow == true){
-            $("#starter").remove();
-        }
-        if(item.setDisplay == true){
-            $("#money").css('opacity', item.display)
         }
         // Update HUD Balance
         if(item.updateBalance == true) {

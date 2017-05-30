@@ -14,26 +14,6 @@ html {
     font-family: 'pricedown';
     src: url(pricedown.ttf);
 }
-.tiny {
-    font-size: 29px;
-    position: absolute; right: 10;
-}
-#money {
-    float:right;
-    font-family: pricedown;
-    font-weight: 700;
-    font-size: 35px;
-    color: white;
-    padding: 4px;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-    margin: 0;
-    margin-right: 6px;
-    padding: 0;
-}
-#container {
-    position: absolute;
-    top: 40; right: 40;
-}
 #cursor {
     position: absolute;
     z-index: 99999999;
@@ -55,10 +35,31 @@ h1,h2,h3,h4 {
     width: 300px;
     height: 200px;
 }
+.moneycontainer {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 40;
+    right: 40;
+    width: 300px;
+    height: 200px;
+}
 #balance {
     float:right;
     font-family: pricedown;
     font-weight: 400;
+    font-size: 2rem;
+    color: white;
+    padding: 4px;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    margin: 0;
+    margin-right: 6px;
+    padding: 0;
+}
+#cash {
+    float:right;
+    font-family: pricedown;
+    font-weight: 700;
     font-size: 2rem;
     color: white;
     padding: 4px;
@@ -102,7 +103,17 @@ h1,h2,h3,h4 {
     height: 30px;
     width: 100%;
 }
+.money {
+    display: inline-block;
+    height: 30px;
+    width: 100%;
+}
 .transaction {
+    display: inline-block;
+    height: 30px;
+    width: 100%;
+}
+.cash {
     display: inline-block;
     height: 30px;
     width: 100%;

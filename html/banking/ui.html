@@ -8,17 +8,13 @@
 </head>
 
 <body>
-    <div id="starter" style="font-family: 'roboto'; color: white; position: absolute; left: 20%; top: 5%; width: 60%; background: rgba(40, 40, 40, 0.8)">
-
-	</div>
-	<div id="container">
-		<div id="money">
-
-			<div id="cash"/>
-		</div>
-	</div>
-
 	<img id="cursor" src="cursor.png">
+	<div class="moneycontainer">
+		<div class="money">
+        </div>
+        <div class="cash">
+        </div>
+	</div>
 	<div class="container">
 		<div class="balance">
 		</div>
@@ -55,23 +51,23 @@
 			</div>
 			<div class="body withdraw-container">
 				<div class="form">
-					<div class="notification"></div>
-					<form id="withdraw-form">
-              <input id="amount" type="text" placeholder="Amount" class="sans" required/><br>
-              <button type="submit" id="submit" class="submit sans">Withdraw</button>
-          </form>
-				</div>
-				<div class="centered">
-						<a href="#" class="button sans btnHome">Home</a>
-						<a href="#" class="button sans btnClose">Close Menu</a>
-				</div>
+                    <div class="notification"></div>
+                    <form id="withdraw-form">
+                        <input id="amount" type="text" placeholder="Amount" class="sans" required/><br>
+                        <button type="submit" id="submit" class="submit sans">Withdraw</button>
+                    </form>
+                </div>
+                <div class="centered">
+                    <a href="#" class="button sans btnHome">Home</a>
+                    <a href="#" class="button sans btnClose">Close Menu</a>
+                </div>
 			</div>
 			<div class="body deposit-container">
 				<div class="form">
 					<form id="deposit-form">
-              <input id="amount" type="text" placeholder="Amount" class="sans" required/><br>
-              <button type="submit" id="submit" class="submit sans">Deposit</button>
-          </form>
+                        <input id="amount" type="text" placeholder="Amount" class="sans" required/><br>
+                        <button type="submit" id="submit" class="submit sans">Deposit</button>
+                    </form>
 				</div>
 				<div class="centered">
 						<a href="#" class="button sans btnHome">Home</a>
@@ -81,14 +77,14 @@
 			<div class="body transfer-container">
 				<div class="form">
 					<form id="transfer-form">
-              <input id="amount" type="text" placeholder="Amount" class="sans" required/><br>
-              <input id="toPlayer" type="text" placeholder="To" class="sans" required/><br>
-              <button type="submit" id="submit" class="submit sans">Transfer</button>
-          </form>
+                        <input id="amount" type="text" placeholder="Amount" class="sans" required/><br>
+                        <input id="toPlayer" type="text" placeholder="To" class="sans" required/><br>
+                        <button type="submit" id="submit" class="submit sans">Transfer</button>
+                    </form>
 				</div>
 				<div class="centered">
-						<a href="#" class="button sans btnHome">Home</a>
-						<a href="#" class="button sans btnClose">Close Menu</a>
+					<a href="#" class="button sans btnHome">Home</a>
+                    <a href="#" class="button sans btnClose">Close Menu</a>
 				</div>
 			</div>
 		</div>
