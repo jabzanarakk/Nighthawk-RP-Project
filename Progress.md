@@ -40,6 +40,7 @@ Plan System
 - Advanced Player Skin
 - Ipl load
 - Action Menu
+- Player Log System
 
 Waiting for script Support
 - Official Database API
